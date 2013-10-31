@@ -1,0 +1,33 @@
+div.gridsquare {
+	float:left;
+	margin:5px;
+	border:thin solid black;
+	width:10em;
+	height:10ex
+}
+
+div.gridcolumnheader {
+	float:left;
+	margin:5px;
+	width:10em;
+	height:10ex
+}
+
+div.gridrowheader {
+	float:left;
+	margin:5px;
+	width:10em;
+	height:10ex
+}
+
+span.gridcontent {
+	display:none;
+}
+
+span.showcontent {
+	display:inline;
+}
+
+span.gridheader {
+	
+}

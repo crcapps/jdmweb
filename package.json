@@ -1,0 +1,14 @@
+{
+	"name": "jdmweb",
+	"description": "Judgement and Decision Making Web Suite",
+	"version": "1.0.0",
+	"repository": {
+		"type": "",
+		"url": ""
+	},
+	"dependencies": {
+		"express": "latest",
+		"csv": "latest"
+	}
+	
+}
