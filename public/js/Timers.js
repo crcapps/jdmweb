@@ -4,6 +4,7 @@ function Timer(interval) {
 	var time = 0;
 	var timer;
 	this.start = function () {
+		time = 0;
 		timer = setInterval(function () {
 				time += step;
 			}, step);
@@ -14,9 +15,7 @@ function Timer(interval) {
 		return this;
 	}
 	this.time = function() {
-		var temp = time;
-		time = 0
-		return temp;
+		return time;
 	}
 }
 	

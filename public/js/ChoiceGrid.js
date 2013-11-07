@@ -27,6 +27,8 @@ var nonDirMoves = 0;
 
 var viewTime = 0;
 
+var totalChoices = 0;
+
 var lastCoords = ["-1","-1"];
 
 var moveLog = "";
@@ -44,12 +46,27 @@ function doinit() {
 	moveLog += "STARTTIME:" + new Date().toUTCString() + "\n";
 }
 
-function makeChoice(id,label) {
+function makeChoice(id,label,rank) {
+	totalChoices++;
 	choiceGrid.lagTimer.stop()
+	if (rank == "best" || rank == "worst" && totalChoices < 5) {
+		moveLog += "DIR:" + madeChoice + " CHOICE:" + id + " (" + label + ") LAGTIME:" + choiceGrid.lagTimer.time() + "\n";
+		var divs = document.getElementsByTagName('div');
+		alert(id);
+		var targetId = id;
+		for (var div in divs) {
+			var theId = div.id.split(',');
+			if (theId[1] == targetId) {
+				div.className = "eliminated";
+			}
+		}
+	} else {
 	choiceGrid.totalTimer.stop();
-	moveLog += "DIR:" + madeChoice + " CHOICE:" + id + " (" + label + ") LAGTIME:" + choiceGrid.lagTimer.time(); + " TOTALTIME:" + choiceGrid.totalTimer.time();
+	moveLog += "DIR:" + madeChoice + " CHOICE:" + id + " (" + label + ") LAGTIME:" + choiceGrid.lagTimer.time() + " TOTALTIME:" + choiceGrid.totalTimer.time();
 	moveLog += " STOPTIME:" + new Date().toUTCString() + "\n";
 	moveLog += "END CHOICE GRID";
+	}
+
 	alert(moveLog);
 }
 

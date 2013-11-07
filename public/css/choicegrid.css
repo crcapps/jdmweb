@@ -6,6 +6,10 @@ div.gridsquare {
 	height:10ex
 }
 
+div.eliminated {
+	display:none;
+}
+
 div.gridcolumnheader {
 	float:left;
 	margin:5px;

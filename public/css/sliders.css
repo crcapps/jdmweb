@@ -1,33 +1,35 @@
-div.gridsquare {
-	float:left;
-	margin:5px;
-	border:thin solid black;
-	width:10em;
-	height:10ex
+div.sliderWrapper {
+	
 }
 
-div.gridcolumnheader {
-	float:left;
-	margin:5px;
-	width:10em;
-	height:10ex
+div.sliderDiv {
+	
 }
 
-div.gridrowheader {
-	float:left;
-	margin:5px;
-	width:10em;
-	height:10ex
+div.topLabelDiv {
+	
 }
 
-span.gridcontent {
-	display:none;
+div.labelsDiv {
+	
 }
 
-span.showcontent {
-	display:inline;
+input.slider {
+	
 }
 
-span.gridheader {
+span.topLabel {
+	
+}
+
+span.leftPole {
+	
+}
+
+span.midPoint {
+	
+}
+
+span.rightPole {
 	
 }

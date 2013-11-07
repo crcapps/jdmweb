@@ -15,16 +15,43 @@ var stepSurvey4 = 6;
 var stepSurvey3 = 3;
 var stepSurvey2 = 2;
 var stepSurvey1 = 1;
+var stepInvalidError = 0;
+
+var techContact = ["Casey Capps","capps@ohio.edu"];
+var techContactLink = "<a href=\"mailto:" + techContact[1] + "\"><span>" + techContact[0] + "(" + techContact[1] + ")</span></a>\n";
+
+var errorNoSubjectFileSpecified = ["noSubject", "<h2>No subject file specified.</h2>\n"];
+var errorDefault = ["default","<h2>An error has occurred.</h2>\n<p><span>Please contact " + techContactLink + " to notify the </span></p>"];
+var errorNoGridFile = ["noGrid","<h2>ERROR: Grid file not present</h2>\n"];
+var errorNoSlidersFile = ["noSliders","<h2>ERROR: Sliders file not present</h2>\n"];
+var errorInvalidExperiment = ["invalidExperiment","<h2>Invalid experiment.</h2>\n"];
+var errorInvalidRankMode = ["invalidRankMode", "<h2>Not a valid ranking mode for choice grid.</h2>"];
+
+function getErrorHtml(errortype) {
+	switch (errortype[0]) {
+		case errorNoSubjectFileSpecified[0]:
+			return errorNoSubjectFileSpecified[1];
+		case errorNoGridFile[0]:
+			return errorNoGridFile[1];
+		case errorNoSlidersFile[0]:
+			return errorNoSlidersFile[1];
+		case errorInvalidRankMode[0]:
+			return errorInvalidRankMode[1];
+		default:
+			return errorDefault;
+	}
+}
 
 
 app.get("/", function (req, res) {
 	var data = "<!DOCTYPE html>\n"; 
 	data += "<html lang=" + "\"" + language + "\">\n";
 	data += "<head>\n";
-	data += "<h2>Here's an experiment, you didn't do it right</h2>\n"
+	data += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/choicegrid.css\">\n";
 	data += "</head>\n";
 	data += "<body>\n";
-	data = "</body>\n"
+	data += getErrorHtml(errorNoSubjectFileSpecified);
+	data += "</body>\n"
 	data += "</html>";
 	res.send(data);
 })
@@ -62,7 +89,7 @@ function parseFile(filename) {
 	catch (err)
 	{
 		if (err.code === 'ENOENT') {
-		  return  0;
+		  return  stepInvalidError;
 		} else {
 		  throw err;
 		}
@@ -91,15 +118,31 @@ function generateTop(phase) {
 		default:
 		break;
 	}
+	top += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/base.css\">\n";
 	top += "</head>\n";
 	top += "<body>\n";
+	top += "<form>\n"
 	return top;
 }
 
 function generateBottom() {
-	var bottom = "</body>\n"
+	var bottom = "</form>\n"
+	bottom +=  "</body>\n"
 	bottom += "</html>";
 	return bottom;
+}
+
+function gridEliminationMode(mode) {
+	switch (mode.toString()) {
+		case "RANKMODE SingleChoice":
+			return "single";
+		case "RANKMODE BestFirst":
+			return "best";
+		case "RANKMODE WorstFirst":
+			return "worst";
+		default:
+			return "other";
+	}
 }
 
 function parseGrid(gridFile) {
@@ -109,13 +152,16 @@ function parseGrid(gridFile) {
 	}
 	catch (err) {
 		if (err.code === 'ENOENT') {
-			return "<h2>ERROR: Grid file not present</h2>\n";		}
+			return getErrorHtml(errorNoGridFile);		}
 	 else {
 		  throw err;
 		}
 	}
 	var gridHtml = "";
 	var lines = data.split('\n');
+	var elimMode = lines.slice(0,1);
+	var rankMode = gridEliminationMode(elimMode);
+	lines.splice(0,1)
 	var row = 0;
 	var column = 0;
 	for (var l in lines) {
@@ -135,7 +181,7 @@ function parseGrid(gridFile) {
 			gridHtml += "<div id=\"" + id +"\" class=\"" + cssclass + "\"" + mouseover + mouseout + ">\n";
 			gridHtml += "<span id=\"cell:" + id + "\" class=\"" + spanclass +  "\">";
 			if (isRowHeader && !isColumnHeader) {
-				 gridHtml += "<a id=\"choice:" + row + "\" href=\"#\" onclick=\"makeChoice(" + row + ",\'" + col + "\');\">" + col + "</a>";
+				 gridHtml += "<a id=\"choice:" + row + "\" href=\"#\" onclick=\"makeChoice(" + row + ",\'" + col + "\', \'"  + rankMode + "\');\">" + col + "</a>";
 			}
 			else {
 				gridHtml += col;
@@ -159,20 +205,43 @@ function parseSliders(slidersFile) {
 	}
 	catch (err) {
 		if (err.code === 'ENOENT') {
-			return "<h2>ERROR: Sliders file not present</h2>\n"		} else {
+			return getErrorHtml(errorNoSlidersFile);		} else {
 		  throw err;
 		}
 	}
 	var slidersHtml = "";
 	var lines = data.split('\n');
+	lines.splice(0, 1);
 	var row = 0;
 	var column = 0;
 	for (var l in lines) {
 		var line = lines[l];
 		var theLine = line.split(',');
-		for (var c in theLine) {
-		}
+		//name,max,min,step,value,question,minlabel,maxlabel,midlabel
+		var sliderName = theLine[0];
+		var sliderMax = theLine[1];
+		var sliderMin = theLine[2];
+		var sliderStep = theLine[3];
+		var sliderValue = theLine[4];
+		var sliderQuestion = theLine[5];
+		var sliderLeftPole = theLine[6];
+		var sliderRightPole = theLine[7];
+		var sliderMidPoint = theLine[8];
+		slidersHtml += "<div class=\"sliderWrapper\">\n";
+		slidersHtml += "<div class=\"topLabelDiv\"";
+		slidersHtml += "<span class=\"topLabel\">" +  sliderQuestion + "</span>";
+		slidersHtml += "</div>\r"
+		slidersHtml += "<div class=\"sliderDiv\">\n";
+		slidersHtml += "<input class=\"slider\" type = \"range\" name = \"" + sliderName + "\" min=\"" + sliderMin +"\" + max=\"" + sliderMax + "\" step = \"" + sliderStep + "\" value = \"" + sliderValue +  "\" />\n";
+		slidersHtml += "</div>\n"
+		slidersHtml += "<div class=\"labelsDiv\">\n";
+		slidersHtml += "<span class=\"leftPole\">" +  sliderLeftPole + "</span>";
+		slidersHtml += "<span class=\"midPoint\">" +  sliderMidPoint + "</span>";
+		slidersHtml += "<span class=\"rightPole\">" +  sliderRightPole + "</span>\n";
+		slidersHtml += "</div>\r"
+		slidersHtml += "</div>\r"
 	}
+	slidersHtml += "<input type=\"submit\" />\r"
 	return slidersHtml;		
 }
 
@@ -212,7 +281,7 @@ function withId (req, res) {
 			dataToSend += "<h2>Survey 1 will be here when done.";
 			break;
 		default:
-			dataToSend += "<h2>Invalid experiment.</h2>\n";
+			dataToSend += getErrorHtml(errorInvalidExperiment);
 			break;
 	}
 	dataToSend += generateBottom();
