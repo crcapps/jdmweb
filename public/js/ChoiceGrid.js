@@ -42,22 +42,25 @@ function moveType(rowOrigin, colOrigin, rowDestination, colDestination) {
 }
 
 function doinit() {
-	moveLog += "\nBEGIN CHOICE GRID";
+	moveLog += "\nBEGIN CHOICE GRID\n";
 	moveLog += "STARTTIME:" + new Date().toUTCString() + "\n";
+	choiceGrid.totalTimer.start();
 }
 
 function makeChoice(id,label,rank) {
 	totalChoices++;
-	choiceGrid.lagTimer.stop()
-	if (rank == "best" || rank == "worst" && totalChoices < 5) {
+	choiceGrid.lagTimer.stop();
+	var choices = document.querySelectorAll("div.gridrowheader").length;
+	if (rank == "best" || rank == "worst" && totalChoices <= choices) {
 		moveLog += "DIR:" + madeChoice + " CHOICE:" + id + " (" + label + ") LAGTIME:" + choiceGrid.lagTimer.time() + "\n";
 		var divs = document.getElementsByTagName('div');
-		alert(id);
 		var targetId = id;
-		for (var div in divs) {
-			var theId = div.id.split(',');
-			if (theId[1] == targetId) {
-				div.className = "eliminated";
+		for (var index = 0; index < divs.length; index++) {
+			var theDiv = divs[index];			
+			var theId = theDiv.id.split(',');
+			var row = theId[1];
+			if (row == targetId) {
+				divs[index].className = "eliminated";
 			}
 		}
 	} else {
@@ -116,3 +119,5 @@ function mouseOutGrid(row,column) {
 	cell.className = "gridcontent";
 	
 }
+
+window.onload = doinit;

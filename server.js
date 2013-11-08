@@ -112,6 +112,7 @@ function generateTop(phase) {
 		top += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/choicegrid.css\">\n";
 		break;
 		case stepSliders:
+		top += "<script src=\"/js/Timers.js\"></script>\n";
 		top += "<script src=\"/js/Sliders.js\"></script>\n";
 		top += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/sliders.css\">\n";
 		break;
@@ -121,13 +122,13 @@ function generateTop(phase) {
 	top += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/base.css\">\n";
 	top += "</head>\n";
 	top += "<body>\n";
-	top += "<form>\n"
+	//top += "<form>\n"
 	return top;
 }
 
 function generateBottom() {
-	var bottom = "</form>\n"
-	bottom +=  "</body>\n"
+	//var bottom = "</form>\n"
+	var bottom =  "</body>\n"
 	bottom += "</html>";
 	return bottom;
 }
@@ -241,7 +242,7 @@ function parseSliders(slidersFile) {
 		slidersHtml += "</div>\r"
 		slidersHtml += "</div>\r"
 	}
-	slidersHtml += "<input type=\"submit\" />\r"
+	slidersHtml += "<button onclick=\"submitSliders();\">Submit</button>\r"
 	return slidersHtml;		
 }
 
