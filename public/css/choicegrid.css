@@ -30,6 +30,7 @@ span.gridcontent {
 
 span.showcontent {
 	display:inline;
+	overflow:hidden;
 }
 
 span.gridheader {
