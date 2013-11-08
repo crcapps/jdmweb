@@ -1,5 +1,5 @@
 RANKMODE WorstFirst
-Choice, Price, Fat, Taste
+Choice, Price, Fat, Image
 Chips, $3.00, 12g, <img src="/images/chips.png" />
 Pie, $7.50, 9g, 8
 Toast, $0.99, 1g, 3
