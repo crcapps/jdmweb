@@ -1,0 +1,8 @@
+RANKMODE BestFirst
+Choice, Calories, Total fat, Sat fat, Sodium, Carbohydrate, Sugar, Protein, # of vitamins/minerals with some value
+Potato Chips 1,100,5 (7%),1 (5%),80 (3%),13 (4%),1,2 (4%),3
+Potato Chips 2,200,3 (4%),.5 (3%),230 (10%),39 (13%),4,3 (4%),3
+Potato Chips 3,130,7 (11%),2 (10%),135 (6%),17 (6%),1,1 (2%),1
+Potato Chips 4,150,9 (14%),2.5 (13%),140 (6%),16 (5%),1,1 (2%),1
+Potato Chips 5,150,10 (15%),3 (15%),0 (0%),14 (5%),0,2 (4%),2
+Potato Chips 6,150,9 (14%),2 (10%),55 (2%),14 (5%),0,2 (4%),1

@@ -10,20 +10,14 @@ var moveLog = "";
 var sliders = new Sliders();
 
 function doinit() {
-	moveLog += "\nBEGIN SLIDERS\n";
-	moveLog += "STARTTIME:" + new Date().toUTCString() + "\n";
 	sliders.totalTimer.start();
+	document.getElementById('starttime').value = new Date().toUTCString();
 }
 
 function submitSliders() {
 	sliders.totalTimer.stop();
-	var slides = document.querySelectorAll('input[type="range"]');
-	for (var index = 0; index < slides.length; index++) {
-		moveLog += "SLIDER: " + slides[index].name + " " + slides[index].value + "\n";
-	}
-	moveLog += "TOTAL TIME: " + sliders.totalTimer.time() + " STOPTIME:" + new Date().toUTCString() + "\n";
-	moveLog += "END SLIDERS";
-	alert(moveLog);
+	document.getElementById('stoptime').value = new Date().toUTCString();
+	document.getElementById('time').value = sliders.totalTimer.time();
 }
 
 window.onload = doinit;

@@ -17,12 +17,24 @@ var movedAlternativeWise = 1;
 var movedAttributeWise = 2;
 var movedDiagonally = 3;
 var movedNonDirectionally = 4;
-var madeChoice = 5;
+var movedNone = 5;
+var madeChoice = 6;
+
+var initialText = "";
+var movedAlternativeWiseText = "ALT-WISE";
+var movedAttributeWiseText = "ATT-WISE";
+var movedDiagonallyText = "NEITHER";
+var movedNonDirectionallyText = "NEITHER";
+var movedNoneText = "NONE";
+var madeChoiceText = "CHOICE";
+
+var hasMovedYet = false;
 
 var totalMoves = 0;
 var altMoves = 0;
 var attMoves = 0;
 var diagMoves = 0;
+var noneMoves = 0;
 var nonDirMoves = 0;
 
 var viewTime = 0;
@@ -31,6 +43,8 @@ var totalChoices = 0;
 
 var lastCoords = ["-1","-1"];
 
+var moveSummary = "SUMMARY MEASURES\nMovements\n,Raw,Proportion\n";
+
 var moveLog = "";
 
 var cellActive = false;
@@ -38,17 +52,22 @@ var cellActive = false;
 var choiceGrid = new ChoiceGrid();
 
 function moveType(rowOrigin, colOrigin, rowDestination, colDestination) {
-	return (rowOrigin == -1 || colDestination == -1) ? initial : (Math.abs(rowOrigin - rowDestination) > 1 || Math.abs(colOrigin - colDestination) > 1 ) ? movedNonDirectionally : (colOrigin != colDestination && rowOrigin != rowDestination) ? movedDiagonally : (colOrigin != colDestination) ? movedAttributeWise : movedAlternativeWise;
+	return (rowOrigin == -1 || colOrigin == -1) ? initial : (rowOrigin == rowDestination && colOrigin == colDestination) ? movedNone : (Math.abs(rowOrigin - rowDestination) > 1 || Math.abs(colOrigin - colDestination) > 1 ) ? movedNonDirectionally : (colOrigin != colDestination && rowOrigin != rowDestination) ? movedDiagonally : (colOrigin != colDestination) ? movedAlternativeWise : movedAttributeWise;
 }
 
 function doinit() {
-	moveLog += "\nBEGIN CHOICE GRID\n";
 	moveLog += "STARTTIME:" + new Date().toUTCString() + "\n";
+	moveLog += "Movement: 1=Alt-wise   2=Att-wise   3=Neither   4=None\n";
+	moveLog += "Index,Row,Column,Display time,Lag time,Movement\n";
 	choiceGrid.totalTimer.start();
 }
 
 function makeChoice(id,label,rank) {
+	hasMovedYet = true;
 	totalChoices++;
+	totalMoves++;
+	//noneMoves++;
+	lastCoords = ["-1","-1"];
 	choiceGrid.lagTimer.stop();
 	var choices = document.querySelectorAll("div.gridrowheader").length;
 	if (rank == "best" || rank == "worst" && totalChoices <= choices) {
@@ -67,11 +86,31 @@ function makeChoice(id,label,rank) {
 	choiceGrid.totalTimer.stop();
 	moveLog += "DIR:" + madeChoice + " CHOICE:" + id + " (" + label + ") LAGTIME:" + choiceGrid.lagTimer.time() + " TOTALTIME:" + choiceGrid.totalTimer.time();
 	moveLog += " STOPTIME:" + new Date().toUTCString() + "\n";
-	moveLog += "END CHOICE GRID";
+	
+	moveSummary += "Total," + totalMoves + ",1.00\n";
+	var altMoveProportion = altMoves/totalMoves;
+	var attMoveProportion = attMoves/totalMoves;
+	var neitherMoves = nonDirMoves + diagMoves;
+	var neitherMoveProportion = neitherMoves/totalMoves;
+	var noneMoveProportion = noneMoves/totalMoves;
+	var choiceProportion = totalChoices/totalMoves;
+	var averageTime = viewTime/totalMoves;
+	moveSummary += movedAlternativeWiseText + "," + altMoves + "," + altMoveProportion.toFixed(2) + "\n";
+	moveSummary += movedAttributeWiseText + "," + attMoves + "," + attMoveProportion.toFixed(2)  + "\n";
+	
+	moveSummary += movedNonDirectionallyText + "," + neitherMoves + "," + neitherMoveProportion.toFixed(2)  + "\n";
+	moveSummary += movedNoneText + "," + noneMoves + "," + noneMoveProportion.toFixed(2)  + "\n"
+	moveSummary += madeChoiceText + "," + totalChoices + "," + choiceProportion.toFixed(2)  + "\n"
+	moveSummary += "Total viewings: " + totalMoves + "\n";
+	moveSummary += "Average viewing time: " + averageTime + " milliseconds\n";
+	
+	document.getElementById('movelog').value = moveSummary + moveLog;
+	document.getElementById("jdmForm").submit();
 	}
-
-	alert(moveLog);
+	
 }
+
+
 
 function mouseOverGrid(row,column) {
 	var id = "cell:" + row + "," + column;
@@ -81,7 +120,7 @@ function mouseOverGrid(row,column) {
 		cellActive = true;
 		cell.className = "showcontent";
 		var type = moveType(lastCoords[1], lastCoords[0], row, column);
-		switch (moveType) {
+		switch (type) {
 			case movedAlternativeWise:
 				altMoves++;
 				break;
@@ -94,11 +133,20 @@ function mouseOverGrid(row,column) {
 			case movedNonDirectionally:
 				nonDirMoves++;
 				break;
+			case movedNone:
+				noneMoves++;
+				break;
 			default:
 				break;
 		}
 		moveLog += "MOVE:" + totalMoves + " DIR:" + type + " ALT:" + row + " ATT:" + column + " LAGTIME:" + choiceGrid.lagTimer.time();
-		totalMoves++;
+		if (hasMovedYet) {
+			totalMoves++;
+			if (type == initial) {
+				noneMoves++;
+			}
+		}
+		hasMovedYet = true;
 		lastCoords = [column,row];
 		choiceGrid.choiceTimer.start();	
 	});
