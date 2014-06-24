@@ -304,13 +304,13 @@ function withId (req, res) {
 			dataToSend += parseSliders(slidersFile);
 			break;
 		case stepChoiceGrid3:
-			dataToSend += parseGrid(gridFile + "3");
+			dataToSend += parseGrid("grid3.csv");
 			break;
 		case stepChoiceGrid2:
-			dataToSend += parseGrid(gridFile + "2");
+			dataToSend += parseGrid("grid2.csv");
 			break;
 		case stepChoiceGrid1:
-			dataToSend += parseGrid(gridFile + "1");
+			dataToSend += parseGrid("grid1.csv");
 			break;
 		case stepSurvey4:
 			dataToSend += parseSurvey(4);
