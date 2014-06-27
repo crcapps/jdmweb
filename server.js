@@ -65,15 +65,15 @@ function determinePhase(line) {
 			//return stepResponseDynamic;
 			return stepFinished;
 		case "END SLIDERS TWO":
-			return stepSliders3;
-		case "END SLIDERS ONE":
-			return stepSliders2;
-		case "END CHOICE GRID THREE":
-			return stepSliders1;
-		case "END CHOICE GRID TWO":
 			return stepChoiceGrid3;
-		case "END CHOICE GRID ONE":
+		case "END SLIDERS ONE":
 			return stepChoiceGrid2;
+		case "END CHOICE GRID THREE":
+			return stepSliders3;
+		case "END CHOICE GRID TWO":
+			return stepSliders2;
+		case "END CHOICE GRID ONE":
+			return stepSliders1;
 		case "END SURVEY FOUR":
 			return stepChoiceGrid1;
 		case "END SURVEY THREE":
@@ -369,7 +369,7 @@ function writeSliders(inData, slider) {
 	var outData = "";
 	var sliderNumber = getNumberText(slider);
 	outData += "\nBEGIN SLIDERS";
-	outData += sliderNumberl
+	outData += sliderNumber
 	outData += "\n";
 	outData += "START TIME: " + startTime + "\n";
 	outData += "Rating finished in " + inData['time'] + " milliseconds.\n"
