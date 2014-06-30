@@ -102,9 +102,9 @@ function parseFile(filename) {
 	}
 	var lines = data.split('\n');
 	var lastLine = lines.slice(-1)[0];
-	var secondLine = lines[1];
-	var thirdLine = lines[2]
-	return [secondLine,thirdLine,determinePhase(lastLine)];
+	var firstLine = lines[0];
+	var secondLine = lines[1]
+	return [firstLine,secondLine,determinePhase(lastLine)];
 }
 
 function generateTop(phase) {
