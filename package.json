@@ -9,6 +9,9 @@
 	"dependencies": {
 		"express": "latest",
 		"csv": "latest"
+	},
+	"engines" : {
+		"node" : "latest"
 	}
 	
 }
