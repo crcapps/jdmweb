@@ -8,7 +8,7 @@ app.configure(function(){
   app.use(app.router);
 });
 
-var port = 3000;
+var port = process.env.PORT || 3000;
 var language = "en-us";
 
 var stepFinished = 99;
