@@ -25,3 +25,7 @@
 # flushResponse: false
 # enableXFF: false
 # promoteServerVars:  
+
+
+loggingEnabled: true
+devErrorsEnabled: true
