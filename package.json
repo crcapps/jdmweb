@@ -7,7 +7,7 @@
 		"url": ""
 	},
 	"dependencies": {
-		"express": "latest",
+		"express": "< 4.0",
 		"csv": "latest"
 	}
 	
