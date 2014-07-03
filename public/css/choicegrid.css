@@ -30,6 +30,11 @@ div.gridrowheader {
 	text-align:center;
 }
 
+div.gridwrapper {
+	margin: 0 auto;
+	min-width: 20em;
+}
+
 span.gridcontent {
 	display:none;
 }

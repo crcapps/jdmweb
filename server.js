@@ -102,9 +102,7 @@ function parseFile(filename) {
 	}
 	var lines = data.split('\n');
 	var lastLine = lines.slice(-1)[0];
-	var firstLine = lines[0];
-	var secondLine = lines[1]
-	return [firstLine,secondLine,determinePhase(lastLine)];
+	return determinePhase(lastLine);
 }
 
 function generateTop(phase) {
@@ -133,13 +131,13 @@ function generateTop(phase) {
 	top += "</head>\n";
 	top += "<body>\n";
 	top += "<noscript>" + noJavaScriptMessage + "</noscript>";
-	top += "<form id=\"jdmForm\" method=\"post\">\n"
+	top += "<form id=\"jdmForm\" method=\"post\">\n";
 	return top;
 }
 
 function generateBottom() {
-	var bottom = "</form>\n"
-	bottom +=  "</body>\n"
+	var bottom = "</form>\n";
+	bottom +=  "</body>\n";
 	bottom += "</html>";
 	return bottom;
 }
@@ -169,7 +167,7 @@ function parseGrid(gridFile) {
 		  throw err;
 		}
 	}
-	var gridHtml = "";
+	var gridHtml = "<div class=\"gridwrapper\">\n";
 	var lines = data.split('\n');
 	var elimMode = lines.slice(0,1);
 	var rankMode = gridEliminationMode(elimMode);
@@ -207,8 +205,8 @@ function parseGrid(gridFile) {
 		column = 0;
 	}
 	row = 0;
-	
-	gridHtml += "<input type=\"hidden\" id=\"movelog\" name=\"movelog\" />";
+	gridHtml += "</div>\n";
+	gridHtml += "<input type=\"hidden\" id=\"movelog\" name=\"movelog\" />\n";
 	return gridHtml;
 }
 
@@ -244,7 +242,7 @@ function parseSliders(slidersFile) {
 		slidersHtml += "<div class=\"sliderWrapper\">\n";
 		slidersHtml += "<div class=\"topLabelDiv\"";
 		slidersHtml += "<span class=\"topLabel\">" +  sliderQuestion + "</span>";
-		slidersHtml += "</div>\r"
+		slidersHtml += "</div>\n"
 		slidersHtml += "<div class=\"sliderDiv\">\n";
 		slidersHtml += "<span class=\"leftPole\">" +  sliderLeftPole + "</span>";
 		slidersHtml += "<input class=\"slider\" type = \"range\" name = \"" + sliderName + "\" min=\"" + sliderMin +"\" + max=\"" + sliderMax + "\" step = \"" + sliderStep + "\" value = \"" + sliderValue +  "\" />\n";
@@ -252,13 +250,13 @@ function parseSliders(slidersFile) {
 		slidersHtml += "</div>\n"
 		slidersHtml += "<div class=\"labelsDiv\">\n";
 		slidersHtml += "<span class=\"midPoint\">" +  sliderMidPoint + "</span>";
-		slidersHtml += "</div>\r"
-		slidersHtml += "</div>\r"
+		slidersHtml += "</div>\n"
+		slidersHtml += "</div>\n"
 	}
-	slidersHtml += "<input type=\"hidden\" id=\"starttime\" name=\"starttime\" />";
-	slidersHtml += "<input type=\"hidden\" id=\"time\" name=\"time\" />";
-	slidersHtml += "<input type=\"hidden\" id=\"stoptime\" name=\"stoptime\" />";
-	slidersHtml += "<button onclick=\"submitSliders();\">Submit</button>\r";
+	slidersHtml += "<input type=\"hidden\" id=\"starttime\" name=\"starttime\" />\n";
+	slidersHtml += "<input type=\"hidden\" id=\"time\" name=\"time\" />\n";
+	slidersHtml += "<input type=\"hidden\" id=\"stoptime\" name=\"stoptime\" />\n";
+	slidersHtml += "<button onclick=\"submitSliders();\">Submit</button>\n";
 	return slidersHtml;		
 }
 
@@ -273,7 +271,7 @@ function parseSurvey(survey) {
 			  throw err;
 		}
 	}
-	data += "<input type=\"submit\">\r";
+	data += "<input type=\"submit\">\n";
 	return data;
 }
 
@@ -281,10 +279,8 @@ function withId (req, res) {
 	
 	var dataToSend = "";
 	var id = req.params.id;
-	var experiment = parseFile(id);
-	var gridFile = experiment[0];
-	var slidersFile = experiment[1];
-	var phase = experiment[2];
+	var phase = parseFile(id);
+	var slidersFile = "sliders.csv";
 	dataToSend += generateTop(phase);
 	switch (phase) {
 		case stepFinished:
