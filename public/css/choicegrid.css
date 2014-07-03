@@ -2,8 +2,8 @@ div.gridsquare {
 	float:left;
 	margin:5px;
 	border:thin solid black;
-	width:10em;
-	height:10ex
+	width:5em;
+	height:2ex
 }
 
 div.eliminated {
