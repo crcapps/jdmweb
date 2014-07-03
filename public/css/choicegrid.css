@@ -2,8 +2,10 @@ div.gridsquare {
 	float:left;
 	margin:5px;
 	border:thin solid black;
-	width:6em;
-	height:5ex;
+	width:7em;
+	height:8ex;
+	vertical-align:center;
+	text-align:center;
 }
 
 div.eliminated {
@@ -13,15 +15,19 @@ div.eliminated {
 div.gridcolumnheader {
 	float:left;
 	margin:5px;
-	width:6em;
-	height:5ex
+	width:7em;
+	height:5ex;
+	vertical-align:center;
+	text-align:center;
 }
 
 div.gridrowheader {
 	float:left;
 	margin:5px;
-	width:6em;
-	height:5ex
+	width:7em;
+	height:5ex;
+	vertical-align:center;
+	text-align:center;
 }
 
 span.gridcontent {
