@@ -2,7 +2,7 @@ div.gridsquare {
 	float:left;
 	margin:5px;
 	border:thin solid black;
-	width:5em;
+	width:6em;
 	height:5ex;
 }
 
@@ -13,15 +13,15 @@ div.eliminated {
 div.gridcolumnheader {
 	float:left;
 	margin:5px;
-	width:5em;
+	width:6em;
 	height:5ex
 }
 
 div.gridrowheader {
 	float:left;
 	margin:5px;
-	width:10em;
-	height:10ex
+	width:6em;
+	height:5ex
 }
 
 span.gridcontent {
