@@ -1,11 +1,11 @@
 div.gridsquare {
-	float:left;
+	display:inline-block;
 	margin:5px;
 	border:thin solid black;
 	width:7em;
 	height:8ex;
-	vertical-align:center;
 	text-align:center;
+	vertical-align:top;
 }
 
 div.eliminated {
@@ -13,26 +13,25 @@ div.eliminated {
 }
 
 div.gridcolumnheader {
-	float:left;
+	display:inline-block;
 	margin:5px;
 	width:7em;
 	height:5ex;
-	vertical-align:center;
 	text-align:center;
+	vertical-align:top;
 }
 
 div.gridrowheader {
-	float:left;
+	display:inline-block;
 	margin:5px;
 	width:7em;
 	height:5ex;
-	vertical-align:center;
 	text-align:center;
+	vertical-align:top;
 }
 
 div.gridwrapper {
-	margin: 0 auto;
-	min-width: 20em;
+	white-space:nowrap;
 }
 
 span.gridcontent {
@@ -46,4 +45,17 @@ span.showcontent {
 
 span.gridheader {
 	
+}
+
+
+.Centered
+{
+    vertical-align: middle;
+    display: inline-block;
+}
+.Centerer
+{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }

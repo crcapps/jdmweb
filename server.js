@@ -190,13 +190,14 @@ function parseGrid(gridFile) {
 			var mouseout = isHeader ? "" : " onmouseout=\"mouseOutGrid(" + id + ");\"";
 			gridHtml += "<div id=\"" + id +"\" class=\"" + cssclass + "\"" + mouseover + mouseout + ">\n";
 			gridHtml += "<span id=\"cell:" + id + "\" class=\"" + spanclass +  "\">";
+			gridHtml += "<span class=\"Centerer\"></span><span class=\"Centered\">";
 			if (isRowHeader && !isColumnHeader) {
 				 gridHtml += "<a id=\"choice:" + row + "\" href=\"#\" onclick=\"makeChoice(" + row + ",\'" + col + "\', \'"  + rankMode + "\');\">" + col + "</a>";
 			}
 			else {
 				gridHtml += col;
 			}
-			gridHtml += "</span>\n";
+			gridHtml += "</span></span>\n";
 			gridHtml += "</div>\n";
 			column ++;
 		}
@@ -407,8 +408,7 @@ function writeSurvey(inData, survey) {
 function postWithId (req, res) {
 	var body = req.body;
 	var id = req.params.id;
-	var experiment = parseFile(id);
-	var phase = experiment[2];
+	var phase = parseFile(id);
 	var data = "";
 	switch (phase) {
 			case stepResponseDynamic:
