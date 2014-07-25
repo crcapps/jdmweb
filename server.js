@@ -541,6 +541,19 @@ function parseCommand(command) {
 			}
 			break;
 		case "EXPORT":
+			var subjects = fs.readdirSync("./subjects").filter(function(v){ return /\.txt/.test(v); });
+			var ex ='';
+			for (var i = 0; i < subjects.length; i++) {
+				try {
+					var file = fs.readFileSync(subjects[i],"utf8");
+					ex += "BEGIN SUBJECT " + subjects[i].replace(".txt", "") + "\n";
+					ex += file;
+					ex += "\nEND SUBJECT " + subjects[i].replace(".txt", "") + "\n";
+				}
+				catch (err) {
+					ex += "\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n";
+				}
+			}
 			break;
 		default:
 			returnHtml += getErrorHtml(errorMalformedCommand);
