@@ -555,6 +555,7 @@ function parseCommand(command, res) {
 				}
 			}
 			res.set({"Content-Disposition":"attachment; filename=\"export.txt\""});
+			res.contentType("text/plain");
 			   res.send(ex);
 			break;
 		default:
