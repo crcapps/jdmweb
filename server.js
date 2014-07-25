@@ -499,7 +499,7 @@ function parseCommand(command, res) {
 						created++;
 					}
 					catch (err) {
-						returnHtml = "<span>Error writing file for subject " + subject + "</span><br />\n";
+						returnHtml = "<span>Error writing file for subject " + subject + " Error: " + err + "</span><br />\n";
 						failed++;
 					}
 					
