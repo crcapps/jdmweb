@@ -494,7 +494,8 @@ function parseCommand(command, res) {
 					returnHtml += "<span>Subject " + subject + " already exists.  Ignoring.</span><br />\n";
 				} else {
 					try {
-						fs.writeFileSync("./subjects/" + subject + ".txt");
+						var fd = fs.openFileSync("./subjects/" + subject + ".txt", 'w');
+						fs.closeSync(fd);
 						created++;
 					}
 					catch (err) {
