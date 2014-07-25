@@ -71,7 +71,7 @@ function makeChoice(id,label,rank) {
 	lastCoords = ["-1","-1"];
 	choiceGrid.lagTimer.stop();
 	//var choices = document.querySelectorAll("div.gridrowheader").length;
-	if ((rank == "best" || rank == "worst") && totalChoices < choices) {
+	if ((rank == "best" || rank == "worst") && totalChoices < choices - 1) {
 		moveLog += "DIR:" + madeChoice + " CHOICE:" + id + " (" + label + ") LAGTIME:" + choiceGrid.lagTimer.time() + "\n";
 		var divs = document.getElementsByTagName('div');
 		var targetId = id;
