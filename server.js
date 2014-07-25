@@ -554,6 +554,7 @@ function parseCommand(command) {
 					ex += "\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n";
 				}
 			}
+			returnHtml += ex;
 			break;
 		default:
 			returnHtml += getErrorHtml(errorMalformedCommand);
