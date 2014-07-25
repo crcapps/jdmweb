@@ -1,2 +1,2 @@
 #jdmweb
-##Web suite for Judgement and Decision Making
+##Web suite for Judgment and Decision Making
