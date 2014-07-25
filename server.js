@@ -344,7 +344,7 @@ function withId (req, res) {
 
 function writeData (filename, data) {
 	try {
-		fs.appendFileSync(filename + '.txt', data, 'utf8');
+		fs.appendFileSync("./subjects/" + filename + '.txt', data, 'utf8');
 	} catch (err) {
 		throw err;
 	}
