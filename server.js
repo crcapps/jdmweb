@@ -184,7 +184,7 @@ function parseGrid(gridFile) {
 	var lines = data.split('\n');
 	var elimMode = lines.slice(0,1);
 	var rankMode = gridEliminationMode(elimMode);
-	lines.splice(0,1)
+	lines.splice(0,1);
 	var row = 0;
 	var column = 0;
 	for (var l in lines) {
@@ -558,7 +558,7 @@ function parseCommand(command, res) {
 			res.set({"Content-Disposition":"attachment; filename=\"export.txt\""});
 			res.contentType("text/plain");
 			   res.send(ex);
-			break;
+			return;
 		default:
 			returnHtml += getErrorHtml(errorMalformedCommand);
 	}
