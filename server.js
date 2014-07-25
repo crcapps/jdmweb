@@ -2,6 +2,8 @@ var express = require('express');
 var fs = require('fs');
 var csv = require('csv');
 var app = express();
+var endOfLine = require('os').EOL;
+
 app.use(express.static(__dirname + '/public'));
 app.configure(function(){
   app.use(express.bodyParser());
@@ -35,23 +37,33 @@ var noJavaScriptMessage = "<h2>JavaScript is Required</h2>\n<p>Your browser does
 
 var errorNoSubjectFileSpecified = ["noSubject", "<h2>No subject file specified.</h2>\n"];
 var errorDefault = ["default","<h2>An error has occurred.</h2>\n<p><span>Please contact " + techContactLink + " to notify the system administrator</span></p>"];
+var errorInvalidSubject = ["invalidSubject", "<h2>Participant not found</h2>"];
 var errorNoGridFile = ["noGrid","<h2>ERROR: Grid file not present.</h2>\n"];
 var errorNoSlidersFile = ["noSliders","<h2>ERROR: Sliders file not present.</h2>\n"];
 var errorNoSurveyFile = ["noSurvey", "<h2>ERROR: Survey file not present.</h2>\n"];
 var errorInvalidExperiment = ["invalidExperiment","<h2>Invalid experiment.</h2>\n"];
 var errorInvalidPhase = ["invalidExperiment","<h2>Invalid experiment step.</h2>\n"];
 var errorInvalidRankMode = ["invalidRankMode", "<h2>Not a valid ranking mode for choice grid.</h2>"];
+var errorInvalidCredentials = ["invalidCredentials", "<h2>Invalid request.</h2>"];
+var errorMalformedCommand = ["malformedCommand", "<h2>Malformed command received.  Check syntax.</h2>"];
+var errorBadConfiguration = ["badConfiguration", "<h2>Bad configuration file.</h2>\n<p><span>Please contact " + techContactLink + " to notify the system administrator</span></p>"];
 
 function getErrorHtml(errortype) {
 	switch (errortype[0]) {
 		case errorNoSubjectFileSpecified[0]:
 			return errorNoSubjectFileSpecified[1];
+		case errorInvalidSubject[0]:
+			return errorInvalidSubject[1];
 		case errorNoGridFile[0]:
 			return errorNoGridFile[1];
 		case errorNoSlidersFile[0]:
 			return errorNoSlidersFile[1];
 		case errorInvalidRankMode[0]:
 			return errorInvalidRankMode[1];
+		case errorInvalidCredentials[0]:
+			return errorInvalidCredentials[1];
+		case errorMalformedCommand[0]:
+			return errorMalformedCommand[1];
 		default:
 			return errorDefault[1];
 	}
@@ -450,6 +462,81 @@ function postWithId (req, res) {
 	res.redirect("/" + req.params.id);
 }
 
+function getAdminHtml() {
+	var data = "<form id=\"admin\" method=\"post\" action=\"admin\">\n";
+	data += "<textarea name=\"commands\" form=\"admin\">\n";
+	data += "</textarea>\n";
+	data += "<br/>\n";
+	data += "<input type=\"submit\" value=\"Submit\" />\n";
+	data += "</form>\n";
+	return data;
+}
+
+function parseCommand(command) {
+	switch (command[0].toUpperCase()) {
+		case "CREATE SUBJECT FILES":
+			var subjects = command.slice(1);
+			var created = 0;
+			var failed = 0;
+			var duplicates = 0;
+			var returnHtml = '';
+			for (var i = 0; i < subjects.length; i++) {
+				if (fs.existsSync("./subjects/" + subjects[i] + ".txt")) {
+					duplicates++;
+					failed++;
+					returnHtml += "<span>Subject " + subjects[i] + " already exists.</span><br />\n";
+				} else {
+					created++;
+					returnHtml += "<span>Subject " + subjects[i] + " created.</span><br />\n";
+				}
+			}
+			returnHtml += "<span>" + created + " new records created.</span><br />\n";
+			returnHtml += "<span>" + failed + " records failed to create: " + duplicates + " duplicate records ignored.</span><br />\n";
+			return returnHtml;
+		default:
+			return getErrorHtml(errorMalformedCommand);
+	}
+}
+
+function getAdmin(req, res) {
+	var data = "<!DOCTYPE html>\n"; 
+		data += "<html lang=" + "\"" + language + "\">\n";
+		data += "<head>\n";
+		data += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/choicegrid.css\">\n";
+		data += "</head>\n";
+		data += "<body>\n";
+		data += getAdminHtml();
+		data += "</body>\n"
+		data += "</html>";
+		res.send(data);
+}
+
+function postAdmin(req, res) {
+	var config;
+	var returnHtml = '';
+	try {
+		config = fs.readFileSync('./config/config.csv', 'utf8');
+	}
+	catch(err) {
+		returnHtml = getErrorHtml(errorDefault);
+	}
+	var lines = config.split('\n');
+	var firstLine = lines[0];
+	var user = firstLine.split(',')[0].replace(/\r$/, '').replace(/\n$/, '');
+	var pass = firstLine.split(',')[1].replace(/\r$/, '').replace(/\n$/, '');
+	var body = req.body;
+	var commands = req.body.commands.split(endOfLine);
+	for (var i = 0; i < commands.length; i++) {
+						commands[i] = commands[i].replace(/\r$/, '').replace(/\n$/, '');
+					}
+	if (commands[0] === user && commands[1] === pass) {
+		returnHtml = parseCommand(commands.slice(2));
+	} else {
+		returnHtml += getErrorHtml(errorInvalidCredentials);
+	}
+	res.send(returnHtml);
+}
+
 app.get("/", function (req, res) {
 	var data = "<!DOCTYPE html>\n"; 
 	data += "<html lang=" + "\"" + language + "\">\n";
@@ -462,6 +549,10 @@ app.get("/", function (req, res) {
 	data += "</html>";
 	res.send(data);
 });
+
+app.get("/admin", getAdmin);
+
+app.post("/admin", postAdmin)
 
 app.get("/:id", withId);
 
