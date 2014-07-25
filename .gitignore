@@ -2,4 +2,3 @@ node_modules/*
 deployments/*
 azure.err
 *.publishsettings
-test.txt

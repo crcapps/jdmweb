@@ -90,7 +90,7 @@ function determinePhase(line) {
 function parseFile(filename) {
 	var data;
 	try {
-		data = fs.readFileSync(filename + '.txt', 'utf8');
+		data = fs.readFileSync('./subjects/' + filename + '.txt', 'utf8');
 	}
 	catch (err)
 	{
@@ -158,7 +158,7 @@ function gridEliminationMode(mode) {
 function parseGrid(gridFile) {
 	var data;
 	try {
-	data = fs.readFileSync(gridFile, 'utf8');
+	data = fs.readFileSync('./grid/' + gridFile, 'utf8');
 	}
 	catch (err) {
 		if (err.code === 'ENOENT') {
@@ -264,7 +264,7 @@ function parseSliders(slidersFile) {
 function parseSurvey(survey) {
 	var data;
 	try {
-	data = fs.readFileSync('survey' + survey + '.html', 'utf8');
+	data = fs.readFileSync('./survey/survey' + survey + '.html', 'utf8');
 	}
 	catch (err) {
 		if (err.code === 'ENOENT') {
@@ -281,7 +281,7 @@ function withId (req, res) {
 	var dataToSend = "";
 	var id = req.params.id;
 	var phase = parseFile(id);
-	var slidersFile = "sliders.csv";
+	var slidersFile = "./slider/sliders.csv";
 	dataToSend += generateTop(phase);
 	switch (phase) {
 		case stepFinished:
