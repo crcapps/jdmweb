@@ -473,7 +473,7 @@ function getAdminHtml() {
 	return data;
 }
 
-function parseCommand(command) {
+function parseCommand(command, res) {
 	var returnHtml = "<!DOCTYPE html>\n"; 
 				returnHtml += "<html lang=" + "\"" + language + "\">\n";
 				returnHtml += "<head>\n";
@@ -554,7 +554,8 @@ function parseCommand(command) {
 					ex += "\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n";
 				}
 			}
-			returnHtml += ex;
+			res.set({"Content-Disposition":"attachment; filename=\"export" + now() + ".txt\""});
+			   res.send(ex);
 			break;
 		default:
 			returnHtml += getErrorHtml(errorMalformedCommand);
@@ -597,7 +598,7 @@ function postAdmin(req, res) {
 						commands[i] = commands[i].replace(/\r$/, '').replace(/\n$/, '');
 					}
 	if (commands[0] === user && commands[1] === pass) {
-		returnHtml = parseCommand(commands.slice(2));
+		returnHtml = parseCommand(commands.slice(2), res);
 	} else {
 		returnHtml += getErrorHtml(errorInvalidCredentials);
 	}
