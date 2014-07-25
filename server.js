@@ -554,7 +554,7 @@ function parseCommand(command, res) {
 					ex += "\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n";
 				}
 			}
-			res.set({"Content-Disposition":"attachment; filename=\"export" + now() + ".txt\""});
+			res.set({"Content-Disposition":"attachment; filename=\"export.txt\""});
 			   res.send(ex);
 			break;
 		default:
