@@ -545,13 +545,13 @@ function parseCommand(command, res) {
 			var ex ='';
 			for (var i = 0; i < subjects.length; i++) {
 				try {
-					var file = fs.readFileSync(subjects[i],"utf8");
-					ex += "BEGIN SUBJECT " + subjects[i].replace(".txt", "") + "\n";
+					var file = fs.readFileSync("./subjects/" + subjects[i],"utf8");
+					ex += "BEGIN SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
 					ex += file;
-					ex += "\nEND SUBJECT " + subjects[i].replace(".txt", "") + "\n";
+					ex += "\n\nEND SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
 				}
 				catch (err) {
-					ex += "\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n";
+					ex += "\n\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n\n";
 				}
 			}
 			res.set({"Content-Disposition":"attachment; filename=\"export.txt\""});
