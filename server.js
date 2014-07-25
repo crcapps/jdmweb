@@ -481,7 +481,7 @@ function parseCommand(command) {
 				returnHtml += "</head>\n";
 				returnHtml += "<body>\n";
 	switch (command[0].toUpperCase()) {
-		case "CREATE SUBJECT FILES":
+		case "CREATE SUBJECTS":
 			var subjects = command.slice(1).filter(function(v){return v!==''});
 			var created = 0;
 			var failed = 0;
@@ -508,7 +508,7 @@ function parseCommand(command) {
 			returnHtml += "<span>" + created + " new records created.</span><br />\n";
 			returnHtml += "<span>" + failed + " records failed to create: " + duplicates + " were duplicate records ignored.</span><br />\n";
 			break;
-		case "DELETE SUBJECT FILES":
+		case "DELETE SUBJECTS":
 			var subjects = command.slice(1).filter(function(v){return v!==''});
 			var removed = 0;
 			var failed = 0;
@@ -539,6 +539,8 @@ function parseCommand(command) {
 			for (var i = 0; i < subjects.length; i++) {
 				returnHtml += "<span>" + subjects[i].replace('.txt','') + "</span><br />\n";
 			}
+			break;
+		case "EXPORT":
 			break;
 		default:
 			returnHtml += getErrorHtml(errorMalformedCommand);
