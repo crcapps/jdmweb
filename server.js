@@ -182,7 +182,8 @@ function parseGrid(gridFile) {
 	}
 	var gridHtml = "<div class=\"gridwrapper\">\n";
 	var lines = data.split('\n');
-	var elimMode = lines.slice(0,1).replace("\r",'');
+	var elimMode = lines.slice(0,1);
+	console.log(elimMode);
 	var rankMode = gridEliminationMode(elimMode);
 	lines.splice(0,1);
 	var row = 0;
