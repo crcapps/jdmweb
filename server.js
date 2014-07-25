@@ -156,7 +156,7 @@ function generateBottom() {
 }
 
 function gridEliminationMode(mode) {
-	switch (mode.toString()) {
+	switch (mode.toString().replace('\r','')) {
 		case "RANKMODE SingleChoice":
 			return "single";
 		case "RANKMODE BestFirst":
@@ -183,7 +183,6 @@ function parseGrid(gridFile) {
 	var gridHtml = "<div class=\"gridwrapper\">\n";
 	var lines = data.split('\n');
 	var elimMode = lines.slice(0,1);
-	console.log(elimMode);
 	var rankMode = gridEliminationMode(elimMode);
 	lines.splice(0,1);
 	var row = 0;
