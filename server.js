@@ -3,6 +3,7 @@ var fs = require('fs');
 var csv = require('csv');
 var app = express();
 var endOfLine = require('os').EOL;
+var path = require('path');
 
 app.use(express.static(__dirname + '/public'));
 app.configure(function(){
@@ -473,29 +474,79 @@ function getAdminHtml() {
 }
 
 function parseCommand(command) {
+	var returnHtml = "<!DOCTYPE html>\n"; 
+				returnHtml += "<html lang=" + "\"" + language + "\">\n";
+				returnHtml += "<head>\n";
+				returnHtml += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/choicegrid.css\">\n";
+				returnHtml += "</head>\n";
+				returnHtml += "<body>\n";
 	switch (command[0].toUpperCase()) {
 		case "CREATE SUBJECT FILES":
-			var subjects = command.slice(1);
+			var subjects = command.slice(1).filter(function(v){return v!==''});
 			var created = 0;
 			var failed = 0;
 			var duplicates = 0;
-			var returnHtml = '';
 			for (var i = 0; i < subjects.length; i++) {
-				if (fs.existsSync("./subjects/" + subjects[i] + ".txt")) {
+				var subject = subjects[i].replace(/\W/g, '');
+				if (fs.existsSync("./subjects/" + subject + ".txt")) {
 					duplicates++;
 					failed++;
-					returnHtml += "<span>Subject " + subjects[i] + " already exists.</span><br />\n";
+					returnHtml += "<span>Subject " + subject + " already exists.  Ignoring.</span><br />\n";
 				} else {
-					created++;
-					returnHtml += "<span>Subject " + subjects[i] + " created.</span><br />\n";
+					try {
+						fs.writeFileSync("./subjects/" + subject + ".txt");
+						created++;
+					}
+					catch (err) {
+						returnHtml = "<span>Error writing file for subject " + subject + "</span><br />\n";
+						failed++;
+					}
+					
+					returnHtml += "<span>Subject " + subject + " created.</span><br />\n";
 				}
 			}
 			returnHtml += "<span>" + created + " new records created.</span><br />\n";
-			returnHtml += "<span>" + failed + " records failed to create: " + duplicates + " duplicate records ignored.</span><br />\n";
-			return returnHtml;
+			returnHtml += "<span>" + failed + " records failed to create: " + duplicates + " were duplicate records ignored.</span><br />\n";
+			break;
+		case "DELETE SUBJECT FILES":
+			var subjects = command.slice(1).filter(function(v){return v!==''});
+			var removed = 0;
+			var failed = 0;
+			var ignored = 0;
+			for (var i = 0; i < subjects.length; i++) {
+				var subject = subjects[i].replace(/\W/g, '');
+				if (fs.existsSync("./subjects/" + subject + ".txt")) {
+					try {
+						fs.unlinkSync("./subjects/" + subject + ".txt");
+						returnHtml += "<span>Removed file for subject " + subject + "</span><br />\n";
+						removed++;
+					}
+					catch (err) {
+						returnHtml += "<span>Error removing file for subject " + subject + ".  Error: " + err + "</span><br />\n";
+						failed++;
+						}
+				} else {
+					
+					returnHtml += "<span>Subject " + subject + " doesn't exist.  Ignoring.</span><br />\n";
+					ignored++;
+				}
+			}
+			returnHtml += "<span>" + removed + " records removed.</span><br />\n";
+			returnHtml += "<span>Failure removing " + failed + " records: " + ignored + " were nonexistent records ignored.</span><br />\n";
+			break;
+		case "LIST SUBJECTS":
+			var subjects = fs.readdirSync("./subjects").filter(function(v){ return /\.txt/.test(v); });
+			for (var i = 0; i < subjects.length; i++) {
+				returnHtml += "<span>" + subjects[i].replace('.txt','') + "</span><br />\n";
+			}
+			break;
 		default:
-			return getErrorHtml(errorMalformedCommand);
+			returnHtml += getErrorHtml(errorMalformedCommand);
 	}
+	returnHtml += getAdminHtml();
+	returnHtml += "</body>\n"
+	returnHtml += "</html>";
+	return returnHtml;
 }
 
 function getAdmin(req, res) {
