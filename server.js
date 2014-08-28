@@ -559,6 +559,24 @@ function parseCommand(command, res) {
 			res.contentType("text/plain");
 			   res.send(ex);
 			return;
+		case "SHOW SUBJECTS":
+			var subjects = command.slice(1).filter(function(v){return v!==''});
+			var ex ='';
+						for (var i = 0; i < subjects.length; i++) {
+							try {
+								var file = fs.readFileSync("./subjects/" + subjects[i],"utf8");
+								ex += "BEGIN SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
+								ex += file;
+								ex += "\n\nEND SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
+							}
+							catch (err) {
+								ex += "\n\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n\n";
+							}
+						}
+						res.set({"Content-Disposition":"attachment; filename=\"export.txt\""});
+						res.contentType("text/plain");
+						   res.send(ex);
+						return;
 		default:
 			returnHtml += getErrorHtml(errorMalformedCommand);
 	}
