@@ -564,13 +564,12 @@ function parseCommand(command, res) {
 			var ex ='';
 						for (var i = 0; i < subjects.length; i++) {
 							try {
-								var file = fs.readFileSync("./subjects/" + subjects[i],"utf8");
+								var file = fs.readFileSync("./subjects/" + subjects[i] + ".txt","utf8");
 								ex += "BEGIN SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
 								ex += file;
 								ex += "\n\nEND SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
 							}
 							catch (err) {
-								ex += err + "\n";
 								ex += "\n\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n\n";
 							}
 						}
