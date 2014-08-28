@@ -570,6 +570,7 @@ function parseCommand(command, res) {
 								ex += "\n\nEND SUBJECT " + subjects[i].replace(".txt", "") + "\n\n";
 							}
 							catch (err) {
+								ex += err + "\n";
 								ex += "\n\nEXPORT OF SUBJECT " + subjects[i].replace(".txt", "") + " FAILED!!!\n\n";
 							}
 						}
