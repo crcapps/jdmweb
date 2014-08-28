@@ -640,7 +640,7 @@ app.get("/", function (req, res) {
 
 app.get("/admin", getAdmin);
 
-app.post("/admin", postAdmin)
+app.post("/admin", postAdmin);
 
 app.get("/:id", withId);
 
