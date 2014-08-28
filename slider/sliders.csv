@@ -1,3 +1,1 @@
-name,max,min,step,value,question,minlabel,maxlabel,midlabel
-confidence,10,0,1,5,How confident were you in making the choice?,Not confident at all,Certain,
-difficulty,10,0,1,5,How difficult was it to make your choice?,Very easy, Very difficult,
+name,max,min,step,value,question,minlabel,maxlabel,midlabelconfidence,10,0,1,5,How confident were you in making the choices?,Not confident at all,Certain,difficulty,10,0,1,5,How difficult was it to make your choices?,Very easy, Very difficult,
