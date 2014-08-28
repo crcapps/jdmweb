@@ -66,7 +66,7 @@ function doinit() {
 function makeChoice(id,label,rank) {
 	hasMovedYet = true;
 	totalChoices++;
-	totalMoves++;
+	//totalMoves++;
 	//noneMoves++;
 	lastCoords = ["-1","-1"];
 	choiceGrid.lagTimer.stop();
@@ -94,14 +94,14 @@ function makeChoice(id,label,rank) {
 	var neitherMoves = diagMoves;
 	var neitherMoveProportion = neitherMoves/totalMoves;
 	var noneMoveProportion = noneMoves/totalMoves;
-	var choiceProportion = totalChoices/totalMoves;
+	//var choiceProportion = totalChoices/totalMoves;
 	var averageTime = viewTime/totalMoves;
 	moveSummary += movedAlternativeWiseText + "," + altMoves + "," + altMoveProportion.toFixed(2) + "\n";
 	moveSummary += movedAttributeWiseText + "," + attMoves + "," + attMoveProportion.toFixed(2)  + "\n";
 	
 	moveSummary += movedDiagonallyText + "," + neitherMoves + "," + neitherMoveProportion.toFixed(2)  + "\n";
 	moveSummary += movedNoneText + "," + noneMoves + "," + noneMoveProportion.toFixed(2)  + "\n"
-	moveSummary += madeChoiceText + "," + totalChoices + "," + choiceProportion.toFixed(2)  + "\n"
+	//moveSummary += madeChoiceText + "," + totalChoices + "," + choiceProportion.toFixed(2)  + "\n"
 	moveSummary += "Total viewings: " + totalMoves + "\n";
 	moveSummary += "Average viewing time: " + averageTime + " milliseconds\n";
 	
