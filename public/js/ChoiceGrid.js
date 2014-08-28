@@ -100,7 +100,7 @@ function makeChoice(id,label,rank) {
 	moveSummary += movedAttributeWiseText + "," + attMoves + "," + attMoveProportion.toFixed(2)  + "\n";
 	
 	moveSummary += movedDiagonallyText + "," + neitherMoves + "," + neitherMoveProportion.toFixed(2)  + "\n";
-	moveSummary += movedNoneText + "," + noneMoves + "," + noneMoveProportion.toFixed(2)  + "\n"
+	moveSummary += movedNoneText + "," + noneMoves + "," + noneMoveProportion.toFixed(2)  + "\n";
 	//moveSummary += madeChoiceText + "," + totalChoices + "," + choiceProportion.toFixed(2)  + "\n"
 	moveSummary += "Total viewings: " + totalMoves + "\n";
 	moveSummary += "Average viewing time: " + averageTime + " milliseconds\n";
